@@ -17,8 +17,9 @@ RUN apt-get update && \
   cp -R /opt/owasp-modsecurity-crs/ /etc/apache2/modsecurity.d/owasp-crs/ && \
   mv /etc/apache2/modsecurity.d/owasp-crs/crs-setup.conf.example /etc/apache2/modsecurity.d/owasp-crs/crs-setup.conf && \
   cd /etc/apache2/modsecurity.d && \
-  mv -v /etc/modsecurity.d/modsecurity.conf . && \
-  ln -sv /etc/apache2/modsecurity.d/modsecurity.conf /etc/modsecurity.d/ && \
+  mv -v /etc/modsecurity.d/* . && \
+  sed -i /etc/apache2/mods-available/modsecurity.conf \
+    -e 's|/etc/modsecurity.d/|/etc/apache2/modsecurity.d/|' && \
   printf "include modsecurity.d/owasp-crs/crs-setup.conf\ninclude modsecurity.d/owasp-crs/rules/*.conf" > include.conf && \
   sed -i 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' modsecurity.conf && \
   a2enmod proxy proxy_http
