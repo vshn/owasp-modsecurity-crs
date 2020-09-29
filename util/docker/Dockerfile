@@ -5,7 +5,9 @@ ARG COMMIT=v3.1/fixed
 ARG REPO=vshn/owasp-modsecurity-crs
 ENV PARANOIA=1
 
-RUN apt-get update && \
+RUN DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
+  apt-get -y upgrade && \
   apt-get -y install python git ca-certificates iproute2 && \
   mkdir /opt/owasp-modsecurity-crs && \
   cd /opt/owasp-modsecurity-crs && \
